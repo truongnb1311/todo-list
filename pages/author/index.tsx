@@ -102,7 +102,6 @@ function Author() {
                                             style={{ margin: 20 }}
                                             onClick={showModal(item?.id)}
                                         >    <EditOutlined /></span>
-
                                         <Modal title="Edit name" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
                                             <Input.Group compact>
                                                 <Input
