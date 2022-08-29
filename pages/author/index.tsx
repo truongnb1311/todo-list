@@ -4,9 +4,13 @@ import React from 'react';
 import VirtualList from 'rc-virtual-list';
 import { useEffect, useState } from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import "./Author.module.css"
 import { getUsers, UserItem, deleteUser, createUser, updateUser } from '../../services/author';
 import { Input } from 'antd';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+
+
+
+
 
 function Author() {
     const [onEdit, setOnEdit] = useState(false)
@@ -30,20 +34,21 @@ function Author() {
         createUser(text)
         const newUserItem: UserItem = {
             id: '333',
-            name: text,
-            avatar: 'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1046.jpg',
-            createAt: ''
+            nameJob: text,
+          
         }
         console.log("text", text);
         setData([newUserItem, ...data])
         alert("thêm thành công")
+        setText('')
+
     }
     const handleOk = (e
-        : React.MouseEvent<HTMLElement>) => {
+        : React.MouseEvent<HTMLElement>) => { 
         setIsModalVisible(false);
         updateUser(idEdit, textEdit)
         setData([...data.map(item => {
-            if (item.id === idEdit) item.name = textEdit
+            if (item.id === idEdit) item.nameJob = textEdit
             return item
         })])
     };
@@ -61,6 +66,28 @@ function Author() {
         setIsModalVisible(false);
     };
 
+    //drag and drop
+    const SortableItem = SortableElement(({ value }: { value: string }) =>
+        <li>{value}</li>
+    );
+
+    const SortableList = SortableContainer(({ items }: { items: UserItem[] }) => {
+        return (
+            <ul>
+                {items.map((value, index) => (
+                    <SortableItem key={`item-${index}`} index={index} />
+                ))}
+            </ul>
+        );
+    });
+
+
+
+    
+
+
+
+
     useEffect(() => {
         getUsers().then(data => setData(data))
 
@@ -68,61 +95,65 @@ function Author() {
     console.log(text);
     return (
         <>
-            <Container maxWidth="md" style={{ marginTop: 20 }}>
-                <div className="site-card-wrapper">
-                    <Input.Group compact>
-                        <Input
-                            style={{ width: 'calc(100% - 58px)' }}
-                            defaultValue="name"
-                            value={text}
-                            onChange={handleOnchangeInput}
-                        />
-                        <Button
-                            type="primary"
-                            onClick={handleCreate}>Add</Button>
+            <Container maxWidth="md" style={{ marginTop: 20 }} className='auth-container'>
+            
 
-                    </Input.Group>
-                    <List>
-                        <VirtualList
-                            data={data}
-                            height={ContainerHeight}
-                            itemHeight={47}
-                            itemKey="email"
-                            onScroll={onScroll}
-                        >
-                            {(item: UserItem) => (
-                                <List.Item key={item?.id}>
-                                    <List.Item.Meta
-                                        key={item?.id}
-                                        avatar={<Avatar src={item?.avatar} />}
-                                        title={!onEdit ? <a href="https://ant.design">{item?.name}</a> : <input />}
-                                    />
-                                    <div>
-                                        <span
-                                            style={{ margin: 20 }}
-                                            onClick={showModal(item?.id)}
-                                        >    <EditOutlined /></span>
-                                        <Modal title="Edit name" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-                                            <Input.Group compact>
-                                                <Input
-                                                    style={{ width: 'calc(100% )' }}
-                                                    defaultValue="name"
-                                                    value={textEdit}
-                                                    onChange={handleOnchangeInputEdit}
-                                                />
-                                            </Input.Group>
+                    <div className="site-card-wrapper">
+                        <Input.Group compact className='site-card-input'>
+                            <Input
+                                style={{ width: 'calc(100% - 58px)' }}
+                                defaultValue="name"
+                                value={text}
+                                onChange={handleOnchangeInput}
+                            />
+                            <Button
+                                type="primary"
+                                onClick={handleCreate}>Add</Button>
 
-                                        </Modal>
-                                        <span
-                                            style={{ margin: 20 }}
-                                            onClick={handleDelete(item?.id)}
-                                        >    <DeleteOutlined /></span>
-                                    </div>
-                                </List.Item>
-                            )}
-                        </VirtualList>
-                    </List>
-                </div>
+                        </Input.Group>
+                        <List>
+                            <VirtualList
+                                data={data}
+                                height={ContainerHeight}
+                                itemHeight={47}
+                                itemKey="email"
+                                onScroll={onScroll}
+                            >
+                                {(item: UserItem) => (
+                                    <List.Item key={item?.id}>
+                                        <List.Item.Meta
+
+                                            key={item?.id}
+                                          
+                                            title={!onEdit ? <a href="https://ant.design">{item?.nameJob}</a> : <input />}
+                                        />
+                                        <div>
+                                            <span
+                                                style={{ margin: 20 }}
+                                                onClick={showModal(item?.id)}
+                                            >    <EditOutlined /></span>
+                                            <Modal title="Edit name" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                                                <Input.Group compact>
+                                                    <Input
+                                                        style={{ width: 'calc(100% )' }}
+                                                        defaultValue="name"
+                                                        value={textEdit}
+                                                        onChange={handleOnchangeInputEdit}
+                                                    />
+                                                </Input.Group>
+
+                                            </Modal>
+                                            <span
+                                                style={{ margin: 20 }}
+                                                onClick={handleDelete(item?.id)}
+                                            >    <DeleteOutlined /></span>
+                                        </div>
+                                    </List.Item>
+                                )}
+                            </VirtualList>
+                        </List>
+                    </div>
+               
             </Container></>
     )
 

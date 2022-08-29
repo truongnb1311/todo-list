@@ -2,9 +2,7 @@
 import axios from 'axios';
 export interface UserItem {
     id: string,
-    avatar: string,
-    name: string,
-    createAt: string
+    nameJob: string
 }
 export async function getUsers(): Promise<UserItem[]> {
     // 👇️ const data: GetUsersResponse

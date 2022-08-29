@@ -1,0 +1,46 @@
+.auth-container {
+  .ant-modal-mask {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    height: 100%;
+    background-color: #ffffff !important;
+    opacity: 0.1 !important;
+  }
+  .site-card-wrapper {
+    width: 75%;
+    margin: auto;
+    .site-card-input {
+      height: 50px;
+      .ant-input {
+        height: 100%;
+        width: calc(100% - 58px);
+        /* height: 57px; */
+        height: 100%;
+        border-radius: 5px 0pc 0px 5px;
+      }
+      .ant-btn-primary {
+        height: 100%;
+        height: 100%;
+        border-radius: 0px 5px 5px 0px;
+
+        background: #00be00;
+        border: none;
+        color: white;
+        font-weight: 600;
+      }
+    }
+    .ant-list {
+      margin-top: 20px;
+      box-shadow: gray;
+      box-shadow: 0 4px 8px 0 rgb(0 0 0 / 10%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+      border-radius: 5px;
+      .ant-spin-nested-loading {
+        padding: 0px 15px;
+      }
+    }
+  }
+}
